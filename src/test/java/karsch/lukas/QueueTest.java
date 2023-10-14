@@ -68,4 +68,13 @@ class QueueTest {
                 () -> assertEquals(3, queue.poll())
         );
     }
+
+    @Test
+    void shouldAddCorrectlyAfterPollingSome() {
+        queue.add(1);
+        queue.add(2);
+        assertEquals(1, queue.poll());
+        queue.add(3);
+        assertEquals(2, queue.poll());
+    }
 }
