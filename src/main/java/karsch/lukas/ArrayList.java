@@ -1,9 +1,6 @@
 package karsch.lukas;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class ArrayList<T> {
@@ -44,7 +41,15 @@ public class ArrayList<T> {
 
 
     public <E> E[] toArray(E[] baseArray) {
-        return null;
+        if (baseArray.length < cursor + 1) {
+            baseArray = Arrays.copyOf(baseArray, cursor + 1);
+        }
+        Arrays.fill(baseArray, null);
+
+        for (int i = 0; i <= cursor; i++) {
+            baseArray[i] = (E) arr[i];
+        }
+        return baseArray;
     }
 
 
@@ -70,17 +75,35 @@ public class ArrayList<T> {
 
 
     public boolean containsAll(Collection<?> c) {
-        return false;
+        for (var element : c) {
+            if (!this.contains(element)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
     public boolean addAll(Collection<? extends T> c) {
-        return false;
+        if (c.isEmpty()) return false;
+        final Iterator<? extends T> iterator = c.iterator();
+        while (iterator.hasNext()) {
+            this.add(iterator.next());
+            iterator.remove();
+        }
+        return true;
     }
 
 
     public boolean addAll(int index, Collection<? extends T> c) {
-        return false;
+        if (c.isEmpty()) return false;
+        final Iterator<? extends T> iterator = c.iterator();
+        while (iterator.hasNext()) {
+            this.add(index, iterator.next());
+            iterator.remove();
+            index++;
+        }
+        return true;
     }
 
 
@@ -106,12 +129,15 @@ public class ArrayList<T> {
 
 
     public T set(int index, T element) {
-        return null;
+        T previousElement = (T) arr[index];
+        arr[index] = element;
+        return previousElement;
     }
 
 
     public void add(int index, T element) {
-
+        shiftRight(index, 1);
+        arr[index] = element;
     }
 
 
@@ -160,10 +186,32 @@ public class ArrayList<T> {
     }
 
     private void shiftRight(int index, int amount) {
-
+        if (cursor + amount > arr.length) {
+            doubleArraySize();
+        }
+        for (int i = cursor; i >= index; i--) {
+            arr[i + 1] = arr[i];
+        }
+        arr[index] = null;
     }
 
     private void doubleArraySize() {
         this.arr = Arrays.copyOf(arr, Math.max(1, arr.length * 2));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof ArrayList<?> list) {
+            if (list.size() != this.size()) {
+                return false;
+            }
+            for (int i = 0; i < list.size(); i++) {
+                if (!Objects.equals(list.get(i), arr[i])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

@@ -126,7 +126,7 @@ class ArrayListTest {
         arrayList.add(3);
         Integer[] actual = arrayList.toArray(new Integer[4]);
         Integer[] expected = new Integer[]{1, 2, 3, null};
-        assertEquals(expected, actual);
+        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -136,8 +136,88 @@ class ArrayListTest {
     }
 
     @Test
-    @Disabled
-    void remove() {
+    void shouldRemoveObject() {
+        var stringArrayList = new ArrayList<String>();
+        String s1 = "First";
+        String s2 = "String";
+        String s3 = "Test";
+        stringArrayList.add(s1);
+        stringArrayList.add(s2);
+        stringArrayList.add(s3);
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add(s1);
+        expected.add(s2);
+        stringArrayList.remove(s3);
+        assertEquals(expected, stringArrayList);
+    }
+
+    @Test
+    void shouldRemoveIndexFromEnd() {
+        var stringArrayList = new ArrayList<String>();
+        String s1 = "First";
+        String s2 = "String";
+        String s3 = "Test";
+        stringArrayList.add(s1);
+        stringArrayList.add(s2);
+        stringArrayList.add(s3);
+        var expected = new ArrayList<String>();
+        expected.add(s1);
+        expected.add(s2);
+        stringArrayList.remove(2);
+        assertEquals(expected, stringArrayList);
+    }
+
+    @Test
+    void shouldRemoveIndexFromMiddle() {
+        var stringArrayList = new ArrayList<String>();
+        String s1 = "First";
+        String s2 = "String";
+        String s3 = "Test";
+        stringArrayList.add(s1);
+        stringArrayList.add(s2);
+        stringArrayList.add(s3);
+        var expected = new ArrayList<String>();
+        expected.add(s1);
+        expected.add(s3);
+        stringArrayList.remove(1);
+        assertEquals(expected, stringArrayList);
+    }
+
+    @Test
+    void equalListsShouldBeEqual() {
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+        ArrayList<Integer> compare = new ArrayList<>();
+        compare.add(1);
+        compare.add(2);
+        compare.add(3);
+        assertEquals(arrayList, compare);
+    }
+
+    @Test
+    void unequalListsShouldNotBeEqual() {
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+        ArrayList<Integer> compare = new ArrayList<>();
+        compare.add(2);
+        compare.add(3);
+        compare.add(4);
+        assertNotEquals(arrayList, compare);
+    }
+
+    @Test
+    void similarListsDifferentLengthsNotEqual() {
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+        ArrayList<Integer> compare = new ArrayList<>();
+        compare.add(1);
+        compare.add(2);
+        compare.add(3);
+        compare.add(4);
+        assertNotEquals(arrayList, compare);
     }
 
     @Test
