@@ -129,6 +129,9 @@ public class ArrayList<T> {
 
 
     public T set(int index, T element) {
+        if(index > size()) {
+            throw new IndexOutOfBoundsException();
+        }
         T previousElement = (T) arr[index];
         arr[index] = element;
         return previousElement;
@@ -138,6 +141,7 @@ public class ArrayList<T> {
     public void add(int index, T element) {
         shiftRight(index, 1);
         arr[index] = element;
+        cursor++;
     }
 
 
@@ -213,5 +217,17 @@ public class ArrayList<T> {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("List: [");
+        for (int i = 0; i <= cursor; i++) {
+            stringBuilder.append(((T) arr[i]).toString());
+            stringBuilder.append(", ");
+        }
+        stringBuilder.append("]");
+        return stringBuilder.toString();
     }
 }

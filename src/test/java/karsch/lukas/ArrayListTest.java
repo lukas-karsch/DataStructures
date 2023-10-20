@@ -4,6 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ArrayListTest {
@@ -221,18 +225,107 @@ class ArrayListTest {
     }
 
     @Test
-    @Disabled
-    void containsAll() {
+    void shouldContainAll() {
+        var stringArrayList = new ArrayList<String>();
+        String s1 = "ABc";
+        String s2 = "BCE";
+        String s3 = "Stuttgart";
+        stringArrayList.add(s1);
+        stringArrayList.add(s2);
+        stringArrayList.add(s3);
+        Collection<String> collection = new java.util.ArrayList<>(List.of(s1, s2, s3));
+        assertTrue(stringArrayList.containsAll(collection));
     }
 
     @Test
-    @Disabled
-    void addAll() {
+    void shouldNotContainAll() {
+        var stringArrayList = new ArrayList<String>();
+        String s1 = "ABc";
+        String s2 = "BCE";
+        String s3 = "Stuttgart";
+        String s4 = "Not in list";
+        stringArrayList.add(s1);
+        stringArrayList.add(s2);
+        stringArrayList.add(s3);
+        Collection<String> collection = new java.util.ArrayList<>(List.of(s1, s2, s3, s4));
+        assertFalse(stringArrayList.containsAll(collection));
     }
 
     @Test
-    @Disabled
-    void testAddAll() {
+    void addOneWithIndex() {
+        arrayList.add(1);
+        arrayList.add(2);
+        var expected = new ArrayList<Integer>();
+        expected.add(1);
+        expected.add(4);
+        expected.add(2);
+        //when
+        arrayList.add(1, 4);
+        //expect
+        assertEquals(expected, arrayList);
+    }
+
+    @Test
+    void addSeveralWithIndex() {
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+        var expected = new ArrayList<Integer>();
+        expected.add(1);
+        expected.add(4);
+        expected.add(2);
+        expected.add(5);
+        expected.add(3);
+        //when
+        arrayList.add(1, 4);
+        arrayList.add(3, 5);
+        //expect
+        assertEquals(expected, arrayList);
+    }
+
+    @Test
+    void addAllEmptyCollectionShouldReturnFalse() {
+        assertFalse(arrayList.addAll(new java.util.ArrayList<>()));
+        assertFalse(arrayList.addAll(2, new java.util.ArrayList<>()));
+    }
+
+    @Test
+    void addAllShouldReturnTrue() {
+        var c = new java.util.ArrayList<>(List.of(1, 2));
+        var result1 = arrayList.addAll(c);
+        var result2 = arrayList.addAll(1, c);
+        assertTrue(result1);
+        assertTrue(result2);
+    }
+
+    @Test
+    void addAllToEnd() {
+        arrayList.add(1);
+        arrayList.add(2);
+        var c = new java.util.ArrayList<>(List.of(3, 4, 5));
+        arrayList.addAll(c);
+        var expected = new ArrayList<>();
+        expected.add(1);
+        expected.add(2);
+        expected.add(3);
+        expected.add(4);
+        expected.add(5);
+        assertEquals(expected, arrayList);
+    }
+
+    @Test
+    void testAddAllToMiddle() {
+        arrayList.add(1);
+        arrayList.add(2);
+        var c = new java.util.ArrayList<>(List.of(3, 4, 5));
+        arrayList.addAll(1, c);
+        var expected = new ArrayList<>();
+        expected.add(1);
+        expected.add(3);
+        expected.add(4);
+        expected.add(5);
+        expected.add(2);
+        assertEquals(expected, arrayList);
     }
 
     @Test
