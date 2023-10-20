@@ -140,7 +140,7 @@ class ArrayListTest {
     }
 
     @Test
-    void shouldRemoveObject() {
+    void shouldRemoveObjectAndReturnTrue() {
         var stringArrayList = new ArrayList<String>();
         String s1 = "First";
         String s2 = "String";
@@ -151,8 +151,15 @@ class ArrayListTest {
         ArrayList<String> expected = new ArrayList<>();
         expected.add(s1);
         expected.add(s2);
-        stringArrayList.remove(s3);
+        boolean result = stringArrayList.remove(s3);
         assertEquals(expected, stringArrayList);
+        assertTrue(result);
+    }
+
+    @Test
+    void shouldNotRemoveWrongObjectAndReturnFalse() {
+        boolean result = arrayList.remove(new Object());
+        assertFalse(result);
     }
 
     @Test
@@ -167,8 +174,9 @@ class ArrayListTest {
         var expected = new ArrayList<String>();
         expected.add(s1);
         expected.add(s2);
-        stringArrayList.remove(2);
+        String removed = stringArrayList.remove(2);
         assertEquals(expected, stringArrayList);
+        assertEquals(s3, removed);
     }
 
     @Test
@@ -183,8 +191,9 @@ class ArrayListTest {
         var expected = new ArrayList<String>();
         expected.add(s1);
         expected.add(s3);
-        stringArrayList.remove(1);
+        String removed = stringArrayList.remove(1);
         assertEquals(expected, stringArrayList);
+        assertEquals(s2, removed);
     }
 
     @Test
@@ -329,8 +338,25 @@ class ArrayListTest {
     }
 
     @Test
-    @Disabled
-    void removeAll() {
+    void shouldRemoveAll() {
+        var stringArrayList = new ArrayList<String>();
+        String s1 = "foo";
+        String s2 = "bar";
+        String s3 = "lee";
+        String s4 = "bob";
+        stringArrayList.addAll(List.of(s1, s2, s3, s4));
+        //when
+        boolean result = stringArrayList.removeAll(List.of(s1, s2));
+        //expect
+        var expected = new ArrayList<String>();
+        expected.addAll(List.of(s3, s4));
+        assertEquals(expected, stringArrayList);
+        assertTrue(result);
+    }
+
+    @Test
+    void removeAllNoModificationShouldReturnFalse() {
+        assertFalse(arrayList.removeAll(List.of(1,2)));
     }
 
     @Test

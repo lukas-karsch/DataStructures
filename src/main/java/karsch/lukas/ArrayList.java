@@ -86,10 +86,8 @@ public class ArrayList<T> {
 
     public boolean addAll(Collection<? extends T> c) {
         if (c.isEmpty()) return false;
-        final Iterator<? extends T> iterator = c.iterator();
-        while (iterator.hasNext()) {
-            this.add(iterator.next());
-            iterator.remove();
+        for (T element : c) {
+            this.add(element);
         }
         return true;
     }
@@ -97,10 +95,8 @@ public class ArrayList<T> {
 
     public boolean addAll(int index, Collection<? extends T> c) {
         if (c.isEmpty()) return false;
-        final Iterator<? extends T> iterator = c.iterator();
-        while (iterator.hasNext()) {
-            this.add(index, iterator.next());
-            iterator.remove();
+        for (T element : c) {
+            this.add(index, element);
             index++;
         }
         return true;
@@ -108,7 +104,11 @@ public class ArrayList<T> {
 
 
     public boolean removeAll(Collection<?> c) {
-        return false;
+        boolean result = false;
+        for(Object o : c) {
+            result = remove(o);
+        }
+        return result;
     }
 
 
