@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -360,13 +359,27 @@ class ArrayListTest {
     }
 
     @Test
-    @Disabled
     void retainAll() {
+        arrayList.addAll(List.of(1, 2, 3, 4, 5, 6));
+        var c = new java.util.ArrayList<>(List.of(2, 3, 4, 5, 6, 7, 8));
+        //when
+        arrayList.retainAll(c);
+        //expect
+        var expected = new ArrayList<>();
+        expected.addAll(List.of(2, 3, 4, 5, 6));
+        assertEquals(expected, arrayList);
     }
 
     @Test
-    @Disabled
-    void clear() {
+    void shouldClearList() {
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+        //when
+        arrayList.clear();
+        //expect
+        assertTrue(arrayList.isEmpty());
+        assertEquals(new ArrayList<Integer>(), arrayList);
     }
 
     @Test

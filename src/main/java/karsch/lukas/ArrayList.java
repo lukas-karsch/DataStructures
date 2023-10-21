@@ -1,6 +1,9 @@
 package karsch.lukas;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("unchecked")
 public class ArrayList<T> {
@@ -94,6 +97,7 @@ public class ArrayList<T> {
 
 
     public boolean addAll(int index, Collection<? extends T> c) {
+        //TODO: this can be optimized by shifting the whole array at once and then adding
         if (c.isEmpty()) return false;
         for (T element : c) {
             this.add(index, element);
@@ -113,7 +117,18 @@ public class ArrayList<T> {
 
 
     public boolean retainAll(Collection<?> c) {
-        return false;
+        if (c.isEmpty()) {
+            clear();
+            return true;
+        }
+        boolean result = false;
+        for (int i = 0; i < size(); i++) {
+            if (!c.contains(arr[i])) {
+                remove(i);
+                result = true;
+            }
+        }
+        return result;
     }
 
 
@@ -124,12 +139,15 @@ public class ArrayList<T> {
 
 
     public T get(int index) {
+        if (index < 0 || index > cursor) {
+            throw new IndexOutOfBoundsException();
+        }
         return (T) arr[index];
     }
 
 
     public T set(int index, T element) {
-        if(index > size()) {
+        if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException();
         }
         T previousElement = (T) arr[index];
